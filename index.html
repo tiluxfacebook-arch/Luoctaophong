@@ -19,10 +19,12 @@ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1657273919342445');
+fbq('init', '4483197801948572');
 fbq('track', 'PageView');
-fbq('track', 'ViewContent', {content_name:'Kẹp Phồng Chân Tóc Mini TILUX', content_ids:['TILUX-KPCT'], content_type:'product', value:299000, currency:'VND'});
+fbq('track', 'ViewContent', {content_name:'Kẹp Phồng Chân Tóc Mini TILUX', content_ids:['tilux-kep-phong-chan-toc'], content_type:'product', value:299000, currency:'VND'});
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1657273919342445&ev=PageView&noscript=1"/></noscript>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4483197801948572&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 
 <style>
@@ -761,10 +763,10 @@ var CONFIG = {
   PIXEL_ID: '1657273919342445',
   // Dán URL Web App của Google Apps Script (file Code.gs) vào đây để lưu đơn + gửi CAPI.
   // Để trống = chế độ demo (vẫn bắn Pixel Purchase, nhưng không lưu đơn, không gửi CAPI).
-  ENDPOINT: 'https://script.google.com/macros/s/AKfycbxf7piHZncZbXsN-tvrsOx05BmSDfrLUe7FlfjwwppyhJXiHMdaMd-t6fn4iRtN0BLz/exec',
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbwacVvShbp8PcuHzzkKtLUMzgnIvJlr5I2IUhuULxnkR9eTU-XnY7iHBjPeAaRqKQ4j/exec',
   // Mã khóa chung với Code.gs (FORM_KEY). Hai bên phải giống hệt nhau thì đơn mới được nhận.
   FORM_KEY: 'tilux-ccf7ee42089c8bb3',
-  PRODUCT_ID: 'TILUX-KPCT',
+  PRODUCT_ID: 'tilux-kep-phong-chan-toc',
   PRODUCT_NAME: 'Kẹp Phồng Chân Tóc Mini TILUX',
   OLD_PRICE: 598000,          // giá gốc 1 sản phẩm
   // Giá combo theo số lượng (đơn vị: đồng)
@@ -877,6 +879,8 @@ var CONFIG = {
     var eventId = 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
     var data = {
       key: CONFIG.FORM_KEY,
+      event: 'purchase', website: '',
+      code: 'TLX' + String(Date.now()).slice(-7),
       event_id: eventId,
       name: form.querySelector('[name=name]').value.trim(),
       phone: normPhone(form.querySelector('[name=phone]').value),
@@ -887,8 +891,14 @@ var CONFIG = {
       note: (form.querySelector('[name=note]')||{}).value || '',
       fbp: getCookie('_fbp'), fbc: getFbc(),
       user_agent: navigator.userAgent, source_url: location.href,
+      client_user_agent: navigator.userAgent, event_source_url: location.href,
+      fbclid: new URLSearchParams(location.search).get('fbclid') || '',
+      utm_source: new URLSearchParams(location.search).get('utm_source') || '',
+      utm_campaign: new URLSearchParams(location.search).get('utm_campaign') || '',
       created_at: new Date().toISOString()
     };
+
+    data.fullname = data.name; data.quantity = data.qty;
 
     // 1) Pixel Purchase (trình duyệt) với eventID trùng CAPI để Meta khử trùng lặp
     if (window.fbq){
