@@ -6,7 +6,7 @@
 <title>Chính sách mua hàng | TILUX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap">
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -16,37 +16,39 @@ document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','1657273919342445');fbq('init','4483197801948572');fbq('track','PageView');
 </script>
 <style>
-:root{--bg:#FFF7F9;--ink:#3B1528;--text:rgba(59,21,40,.92);--accent:#C94570;--accent-soft:rgba(201,69,112,.28);--accent-tint:rgba(201,69,112,.07);--line:rgba(0,0,0,.1);--pill-line:rgba(59,21,40,.5)}
+:root{--bg:#fff;--blush:#FFF0F4;--line:#F2D5DF;--rose:#C92763;--ink:#2D1B24;--muted:#6E5763}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font:400 16px/1.8 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.04rem;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
-a{color:inherit;text-underline-offset:3px}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-h1,h2,h4{font-family:"Playfair Display",Georgia,serif;font-weight:700;color:var(--ink);letter-spacing:.78px;line-height:1.3}
-.nav{border-bottom:1px solid var(--line);background:var(--bg)}
+body{font:400 16px/1.7 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:var(--rose);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--rose);outline-offset:2px;border-radius:6px}
+h1,h2,h4{font-weight:800;line-height:1.3;letter-spacing:-.01em}
+.nav{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
 .wrap{max-width:820px;margin:0 auto;padding:0 16px}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:12px}
-.logo{font:400 36px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em;color:var(--ink);text-decoration:none;padding-bottom:4px}
-.back{background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:14px;line-height:1.2;letter-spacing:.6px;padding:12px 18px;border-radius:8px}
-.hero{padding:36px 0 26px;border-bottom:1px solid var(--line);background:linear-gradient(var(--accent-tint),var(--accent-tint)),var(--bg)}
-.hero h1{font-size:clamp(29px,5vw,39px)}
-.hero p{margin-top:8px;font-size:15px}
-.toc{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:18px}
-.toc a{border:1px solid var(--pill-line);border-radius:40px;padding:8px 16px;font-size:14px;line-height:1.2;text-decoration:none;color:var(--ink)}
-.toc a:hover{background:var(--ink);color:var(--bg)}
-main{padding:36px 0 56px}
-article{margin-bottom:44px;scroll-margin-top:20px}
-article>h2{font-size:26px;margin-bottom:6px;padding-bottom:8px;border-bottom:2px solid var(--accent);display:inline-block}
-h4{font-size:17px;margin:22px 0 6px}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:58px;gap:12px}
+.logo{font-weight:800;font-size:22px;letter-spacing:.22em;color:var(--ink);text-decoration:none}
+.back{background:var(--rose);color:#fff;text-decoration:none;font-weight:700;font-size:14px;line-height:1.2;padding:11px 16px;border-radius:12px}
+.hero{padding:34px 0 24px;background:var(--blush);border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,6vw,36px)}
+.hero p{margin-top:6px;color:var(--muted)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.toc a{background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:7px 14px;font-size:14px;font-weight:600;text-decoration:none;color:var(--ink)}
+.toc a:hover{border-color:var(--rose);color:var(--rose)}
+main{padding:32px 0 56px}
+article{margin-bottom:40px;scroll-margin-top:72px}
+article>h2{font-size:24px;margin-bottom:6px;padding-bottom:6px;border-bottom:3px solid var(--rose);display:inline-block}
+h4{font-size:17px;margin:20px 0 6px}
+p,li{color:#4A3640}
 ul{padding-left:22px;display:grid;gap:4px;margin:4px 0}
-.upd{font-size:13px;opacity:.7;margin:6px 0 10px}
-footer{background:var(--accent);color:#fff;padding:30px 0;font-size:14px}
+.upd{font-size:13px;color:var(--muted);margin:6px 0 10px}
+footer{background:var(--ink);color:#E9DCE2;padding:28px 0;font-size:14px}
+footer a{color:#FFB3CB;text-decoration:none}
 footer .links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:10px}
-footer a{text-decoration:none} footer a:hover{text-decoration:underline}
+footer p{color:#E9DCE2}
 </style>
 </head>
 <body>
-<nav class="nav"><div class="wrap"><a class="logo" href="index.html" aria-label="TILUX">tilux</a><a class="back" href="index.html#dat-hang">Về trang mua hàng</a></div></nav>
+<nav class="nav"><div class="wrap"><a class="logo" href="index.html" aria-label="TILUX">TILUX</a><a class="back" href="index.html#dat-hang">Về trang mua hàng</a></div></nav>
 <header class="hero"><div class="wrap"><h1>Chính sách mua hàng</h1><p>Đổi trả, bảo hành, vận chuyển, thanh toán và điều khoản sử dụng.</p>
 <div class="toc"><a href="#doi-tra">Đổi trả, bảo hành</a><a href="#van-chuyen">Vận chuyển, thanh toán</a><a href="#dieu-khoan">Điều khoản sử dụng</a><a href="bao-mat.html">Bảo mật</a></div></div></header>
 <main><div class="wrap">
