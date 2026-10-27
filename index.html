@@ -587,12 +587,27 @@ body.has-sticky{ padding-bottom:84px }
     trackIC();
   }));
 
-  const rules = { name: v => v.trim().length >= 2, phone: v => /^0\d{9}$/.test(digits(v)), address: v => v.trim().length >= 8 };
+  // Tên: chỉ chữ cái và khoảng trắng, không chữ tục, không chuỗi gõ bừa
+  const plain = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+  const BAD = ['dit','dj','djt','loz','buoi','cak','dm','dmm','dcm','vcl','vkl','vl','cl','clm','cmm','cc','fuck','shit','bitch','dick','test','abc','xxx','asd','qwe'];
+  const BAD_FULL = ['địt','lồn','buồi','cặc','đụ','đéo','đĩ','cứt'];
+  const nameProblem = raw => {
+    const v = raw.trim().replace(/\s+/g, ' ');
+    if (v.length < 2) return 'Vui lòng nhập họ tên (ít nhất 2 ký tự).';
+    if (!/^[\p{L}\s.'-]+$/u.test(v)) return 'Họ tên chỉ gồm chữ cái, không có số hay ký hiệu.';
+    const low = v.toLowerCase(), words = plain(v).split(/[\s.'-]+/).filter(Boolean);
+    if (BAD_FULL.some(b => low.split(/[\s.'-]+/).includes(b)) || words.some(w => BAD.includes(w))) return 'Vui lòng nhập họ tên thật của người nhận hàng.';
+    const gib = words.some(w => (w.length > 2 && !/[aeiouy]/.test(w)) || /(.)\1\1/.test(w) || /[bcdfghjklmnpqrstvwxz]{4,}/.test(w) || w.length > 15 || /asdf|qwer|zxcv|hjkl|sdfg|wert|xcvb/.test(w));
+    if (gib) return 'Vui lòng nhập họ tên thật của người nhận hàng.';
+    return '';
+  };
+  const rules = { name: v => !nameProblem(v), phone: v => /^0\d{9}$/.test(digits(v)), address: v => v.trim().length >= 8 };
   const check = () => {
     let first = null;
     Object.keys(rules).forEach(k => {
       const el = form.elements[k], bad = !rules[k](el.value);
       el.closest('.fld').classList.toggle('is-bad', bad); el.setAttribute('aria-invalid', bad);
+      if (k === 'name') { const m = nameProblem(el.value); if (m) el.closest('.fld').querySelector('.fld__err').textContent = m; }
       if (bad && !first) first = el;
     });
     if (first) first.focus();
@@ -601,12 +616,14 @@ body.has-sticky{ padding-bottom:84px }
   $$('.fld input', form).forEach(i => i.addEventListener('input', () => i.closest('.fld').classList.remove('is-bad')));
 
   let ordered = false;
+  let lastSent = 0;
   const row = (k, v) => { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = k; dd.textContent = v; return [dt, dd]; };
   const showDone = d => {
     done.innerHTML = '<span class="done__ic"><svg class="ic"><use href="#i-check"/></svg></span><h2 class="order__h">Đặt hàng thành công</h2><p></p><dl></dl>';
     $('p', done).textContent = 'Cảm ơn ' + d.name + '. TILUX sẽ gọi xác nhận đơn trong giờ hành chính.';
     $('dl', done).append(...row('Sản phẩm', d.qty + ' chiếc · ' + d.color), ...row('Tổng thanh toán', money(d.value)), ...row('Số điện thoại', d.phone), ...row('Địa chỉ', d.address));
     form.hidden = true; done.hidden = false; ordered = true;
+    lastSent = Date.now(); try { localStorage.setItem('tlx_last_order', String(lastSent)); } catch (x) {}
     $('#sticky').hidden = true; document.body.classList.remove('has-sticky');
     done.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
@@ -614,6 +631,14 @@ body.has-sticky{ padding-bottom:84px }
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (!check()) return;
+    // chặn gửi lại trong vài phút (chống bấm nhiều lần / đặt đơn ảo liên tục)
+    const WAIT = 5 * 60 * 1000;
+    let last = lastSent; try { last = Math.max(last, Number(localStorage.getItem('tlx_last_order') || 0)); } catch (x) {}
+    if (Date.now() - last < WAIT) {
+      const box = $('#orderErr'), mins = Math.ceil((WAIT - (Date.now() - last)) / 60000);
+      box.textContent = 'Bạn vừa gửi một đơn hàng. Vui lòng đợi khoảng ' + mins + ' phút nếu muốn đặt thêm, hoặc gọi hotline 0395 018 127 để sửa đơn.';
+      box.hidden = false; return;
+    }
     atc.disabled = true; $('#atcText').textContent = 'ĐANG GỬI ĐƠN...';
     const { qty, colors } = picked(), total = CFG.prices[qty];
     const eventId = 'ord_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
