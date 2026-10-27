@@ -574,6 +574,9 @@ body.has-sticky{ padding-bottom:84px }
   const qs = k => new URLSearchParams(location.search).get(k) || '';
   const fbc = () => cookie('_fbc') || (qs('fbclid') ? 'fb.1.' + Date.now() + '.' + qs('fbclid') : '');
   const digits = v => String(v || '').replace(/\D/g, '');
+  // lấy IP công khai của khách (để Sheet tô đỏ đơn trùng IP và tăng khớp CAPI); lỗi thì bỏ qua, không chặn đặt hàng
+  let clientIp = '';
+  fetch('https://api.ipify.org?format=json').then(r => r.json()).then(j => { clientIp = String(j.ip || ''); }).catch(() => {});
 
   let icSent = false;
   const trackIC = () => { if (!icSent && window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { content_ids: [CFG.productId], content_type: 'product', value: CFG.prices[picked().qty], currency: 'VND' }); } };
@@ -622,6 +625,7 @@ body.has-sticky{ padding-bottom:84px }
       color: colors.join(', '), qty, quantity: qty, value: total, currency: 'VND',
       product: CFG.productName, product_id: CFG.productId, note: form.elements.note.value.trim(),
       fbp: cookie('_fbp'), fbc: fbc(), fbclid: qs('fbclid'),
+      client_ip_address: clientIp,
       user_agent: navigator.userAgent, client_user_agent: navigator.userAgent,
       source_url: location.href, event_source_url: location.href,
       utm_source: qs('utm_source'), utm_campaign: qs('utm_campaign'),
