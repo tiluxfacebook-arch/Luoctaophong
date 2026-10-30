@@ -656,10 +656,10 @@ body.has-sticky{ padding-bottom:84px }
       utm_source: qs('utm_source'), utm_campaign: qs('utm_campaign'),
       created_at: new Date().toISOString()
     };
-    // Gửi đơn về Google Sheet (Apps Script lưu đơn và bắn CAPI Purchase), sau đó mới bắn Pixel Purchase
-    // với CÙNG eventID để Meta gộp Trình duyệt + Máy chủ thành 1 lượt mua.
+    // Gửi đơn về Google Sheet. Trình duyệt chỉ bắn Lead: Purchase chỉ do Apps Script bắn qua CAPI
+    // sau khi nhân viên gọi xác nhận (status = Đã chốt), để đơn ảo/spam form không lọt vào tệp mua hàng.
     const ok = () => {
-      if (window.fbq) fbq('track', 'Purchase', { value: total, currency: 'VND', content_ids: [CFG.productId], content_name: CFG.productName, content_type: 'product', num_items: qty }, { eventID: eventId });
+      if (window.fbq) fbq('track', 'Lead', { value: total, currency: 'VND', content_ids: [CFG.productId], content_name: CFG.productName, content_type: 'product', num_items: qty }, { eventID: 'lead_' + eventId });
       showDone(data);
     };
     const fail = msg => {
